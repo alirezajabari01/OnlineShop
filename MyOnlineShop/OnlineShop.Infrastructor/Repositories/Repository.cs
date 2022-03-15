@@ -1,4 +1,5 @@
-﻿using OnlineShop.Infrastructor.Repositories.Base;
+﻿using OnlineShop.Infrastructor.DataBase;
+using OnlineShop.Infrastructor.Repositories.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,21 @@ namespace OnlineShop.Infrastructor.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        //ToDo Inject DataBase 
+        private readonly OnlineShopContext db;
+
+        public Repository(OnlineShopContext db)
+        {
+            this.db = db;
+        }
+
         public T Create(T entity)
         {
             throw new NotImplementedException();
         }
 
-        public IReadOnlyList<T> GetAll()
+        public IQueryable<T> GetAll()
         {
-            throw new NotImplementedException();
+            return db.Set<T>();
         }
 
         public T GetById(string id)

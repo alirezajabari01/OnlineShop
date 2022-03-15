@@ -1,15 +1,24 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using OnlineShop.Domain.Entities.Identity;
+using OnlineShop.Infrastructor.DataBase;
 using System;
+using OnlineShop.ExtentionMethods;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OnlineShop.Infrastructor.Repositories.Base;
+using OnlineShop.Infrastructor.Repositories;
+using OnlineShop.IOC.IServices;
+using OnlineShop.IOC.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace OnlineShop
 {
@@ -25,7 +34,15 @@ namespace OnlineShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           // base.ConfigureServices(services);
+
+            services.AddDbContext<OnlineShopContext>
+                (options => { options.UseSqlServer("Password=ABC1%@Jbry5;Persist Security Info=True;User ID=sa;Initial Catalog=OnlineShopDB;Data Source=DESKTOP-LJMRBHR\\ENTERPRISE2019"); });
+
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<OnlineShopContext>();
+
+            services.AddServices();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
