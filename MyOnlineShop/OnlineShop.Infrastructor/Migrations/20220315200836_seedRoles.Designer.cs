@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShop.Infrastructor.DataBase;
 
 namespace OnlineShop.Infrastructor.Migrations
 {
     [DbContext(typeof(OnlineShopContext))]
-    partial class OnlineShopContextModelSnapshot : ModelSnapshot
+    [Migration("20220315200836_seedRoles")]
+    partial class seedRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,9 +95,6 @@ namespace OnlineShop.Infrastructor.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -118,7 +117,6 @@ namespace OnlineShop.Infrastructor.Migrations
                         {
                             Id = "e7200f30632b4742ad2a0ed4902049f9",
                             ConcurrencyStamp = "b0ae4265895643878cdf010610719615",
-                            IsActive = false,
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
@@ -126,7 +124,6 @@ namespace OnlineShop.Infrastructor.Migrations
                         {
                             Id = "6da17853bad14f88b29b246e8ad4a085",
                             ConcurrencyStamp = "ae83cc896b484d9498cd3bf66ef2fcdc",
-                            IsActive = false,
                             Name = "User",
                             NormalizedName = "USER"
                         },
@@ -134,7 +131,6 @@ namespace OnlineShop.Infrastructor.Migrations
                         {
                             Id = "a5dddd3a3e6949289c766384a8df4db3",
                             ConcurrencyStamp = "b2da4a92633d4bab94f615cf88be86d3",
-                            IsActive = false,
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -186,9 +182,6 @@ namespace OnlineShop.Infrastructor.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")

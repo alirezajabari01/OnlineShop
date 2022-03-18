@@ -13,6 +13,7 @@ namespace OnlineShop.Domain.EntityConfigurations.Identity
             builder.HasOne(x => x.Role);
 
             builder.HasOne(x => x.User);
+
         }
     }
 }

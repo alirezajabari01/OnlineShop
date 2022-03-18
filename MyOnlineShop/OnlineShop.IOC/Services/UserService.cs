@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OnlineShop.Core.DTO;
+using OnlineShop.Core.DTO.UsersDTO;
 using OnlineShop.Domain.Entities.Identity;
 using OnlineShop.Infrastructor.Repositories.Base;
 using OnlineShop.IOC.IServices;
@@ -15,30 +18,88 @@ namespace OnlineShop.IOC.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRepository<ApplicationUser> _repository;
+        private readonly IMapper mapper;
 
-        public UserService(UserManager<ApplicationUser> userManager, IRepository<ApplicationUser> repository)
+        public UserService(UserManager<ApplicationUser> userManager, IRepository<ApplicationUser> repository, IMapper mapper)
         {
             _userManager = userManager;
             _repository = repository;
+            this.mapper = mapper;
         }
 
-        public async Task<List<ApplicationUser>> GetAll()
+        public async Task<string> AddRoleToUserAsync(AddRoleToUserDTO AddroletouserDTO)
         {
-            return await _userManager.Users.ToListAsync();
+            string outPut = "انجام نشد";
+            var findUserByIdResult = await _userManager.FindByIdAsync(AddroletouserDTO.UserId);
+            if (findUserByIdResult != null)
+            {
+                await RemoveRoleFromUserAsync(AddroletouserDTO.UserId);
+
+                var addRoleToUserResult = await _userManager.AddToRolesAsync(findUserByIdResult, AddroletouserDTO.RoleId);
+                if (addRoleToUserResult.Succeeded)
+                {
+                    outPut = "انجام شد";
+                }
+            }
+            return outPut;
         }
 
-        public async Task<ApplicationUser> GetUserById(string id)
+        public async Task<string> CreateUserAsync(UserDTO userDTO)
         {
-           return await _userManager.FindByIdAsync(id);
+            string outPut = "انجام نشد";
+
+            var userMapped = mapper.Map<ApplicationUser>(userDTO);
+            userMapped.EmailConfirmed = false;
+            userMapped.PhoneNumberConfirmed = false;
+            userMapped.TwoFactorEnabled = false;
+            userMapped.IsActive = false;
+
+            var CreatedResult = await _userManager.CreateAsync(userMapped);
+            if (CreatedResult.Succeeded)
+            {
+                var addToRole = await _userManager.AddToRoleAsync(userMapped, "User");
+                if (addToRole.Succeeded)
+                {
+                    outPut = "انجام شد";
+                }
+            }
+
+            return outPut;
         }
 
-        public async Task<bool> IsPhoneNumberExist(string phonenmber)
+        public async Task<string> DeActiveUserAsync(string userId)
+        {
+            string outPut = "انجام نشد";
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                user.IsActive = false;
+                outPut = "انجام شد";
+            }
+
+            return outPut;
+        }
+
+        public async Task<List<ShowAllUsersDTO>> GetAllAsync()
+        {
+            var userS = await _userManager.Users.ToListAsync();
+            return mapper.Map<List<ShowAllUsersDTO>>(userS);
+        }
+
+        public async Task<ShowAllUsersDTO> GetUserByIdAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            return mapper.Map<ShowAllUsersDTO>(user);
+        }
+
+        public async Task<bool> IsPhoneNumberExistAsync(string phonenmber)
         {
             bool result = false;
             if (!string.IsNullOrEmpty(phonenmber))
             {
                 var user = await _repository.GetAll().FirstOrDefaultAsync(s => s.PhoneNumber == phonenmber);
-                if(user != null)
+                if (user != null)
                 {
                     result = true;
                 }
@@ -46,7 +107,7 @@ namespace OnlineShop.IOC.Services
             return result;
         }
 
-        public async Task<bool> IsUserNameExist(string username)
+        public async Task<bool> IsUserNameExistAsync(string username)
         {
             bool result = false;
 
@@ -60,6 +121,48 @@ namespace OnlineShop.IOC.Services
             }
 
             return result;
+        }
+
+        public async Task<bool> RemoveRoleFromUserAsync(string id)
+        {
+            bool outPut = false;
+
+            var findUserByIdResult = await _userManager.FindByIdAsync(id);
+            if(findUserByIdResult != null)
+            {
+                var userRoles = await _userManager.GetRolesAsync(findUserByIdResult);
+                if(userRoles.Count > 0)
+                {
+                    foreach (var roleName in userRoles)
+                    {
+                        await _userManager.RemoveFromRoleAsync(findUserByIdResult, roleName);
+                        outPut = true;
+                    }
+                }
+            }
+
+            return outPut;
+        }
+
+        public async Task<string> UpdateUserAsync(UserDTO userDTO)
+        {
+            string outPut = "انجام نشد";
+
+            var user = await _userManager.FindByIdAsync(userDTO.Id);
+
+            if (user != null)
+            {
+                user.PhoneNumber = userDTO.PhoneNumber;
+                user.UserName = userDTO.UserName;
+
+                var updateUser = await _userManager.UpdateAsync(user);
+                if (updateUser.Succeeded)
+                {
+                    outPut = "انجام شد";
+                }
+            }
+
+            return outPut;
         }
     }
 }

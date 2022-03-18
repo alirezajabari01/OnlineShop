@@ -13,6 +13,7 @@ namespace OnlineShop.Domain.Entities.Identity
         {
             UserRoles = new HashSet<ApplicationUserRole>();
         }
+        public bool IsActive { get; set; }
         public ICollection<ApplicationUserRole> UserRoles { get; set; }
     }
 }

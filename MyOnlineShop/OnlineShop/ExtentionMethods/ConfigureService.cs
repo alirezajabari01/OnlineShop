@@ -4,6 +4,7 @@ using OnlineShop.Domain.Entities.Identity;
 using OnlineShop.Infrastructor.Repositories;
 using OnlineShop.Infrastructor.Repositories.Base;
 using OnlineShop.IOC.IServices;
+using OnlineShop.IOC.Mapper;
 using OnlineShop.IOC.Services;
 
 namespace OnlineShop.ExtentionMethods
@@ -14,7 +15,9 @@ namespace OnlineShop.ExtentionMethods
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<UserManager<ApplicationUser>>();
+            services.AddAutoMapper(typeof(MappingProfile));
         }
     }
 }
