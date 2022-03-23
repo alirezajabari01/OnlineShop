@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OnlineShop.Domain.Entities.Identity;
 
-namespace OnlineShop.Domain.EntityConfigurations.Identity
+namespace OnlineShop.Infrastructor.EntityConfigurations.Identity
 {
     public class UserRolesEnityConfiguration : IEntityTypeConfiguration<ApplicationUserRole>
     {

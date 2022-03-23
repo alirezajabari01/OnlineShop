@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OnlineShop.Domain.EntityConfigurations.Identity;
 using OnlineShop.Domain.Entities.Identity;
+using OnlineShop.Infrastructor.EntityConfigurations.Identity;
+using OnlineShop.Domain.Entities.Products;
+using OnlineShop.Infrastructor.EntityConfigurations.Products;
 
 namespace OnlineShop.Infrastructor.DataBase
 {
@@ -19,6 +21,10 @@ namespace OnlineShop.Infrastructor.DataBase
         {
 
         }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories  { get; set; }
+        public DbSet<Product_Category> Product_Categories  { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -26,7 +32,10 @@ namespace OnlineShop.Infrastructor.DataBase
             builder.ApplyConfiguration(new UserEnityConfiguration());
             builder.ApplyConfiguration(new RoleEnityConfiguration());
             builder.ApplyConfiguration(new UserRolesEnityConfiguration());
-         
+            builder.ApplyConfiguration(new RoleClaimEntityConfigration());
+            builder.ApplyConfiguration(new CategoryEntityConfiguration());
+            builder.ApplyConfiguration(new ProductEntityConfiguration());
+            builder.ApplyConfiguration(new ProductCategoryEntityConfiguration());
         }
     }
 }

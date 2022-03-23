@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShop.Infrastructor.DataBase;
 
 namespace OnlineShop.Infrastructor.Migrations
 {
     [DbContext(typeof(OnlineShopContext))]
-    partial class OnlineShopContextModelSnapshot : ModelSnapshot
+    [Migration("20220319210026_roleClaims")]
+    partial class roleClaims
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,23 +119,26 @@ namespace OnlineShop.Infrastructor.Migrations
                         new
                         {
                             Id = "e7200f30632b4742ad2a0ed4902049f9",
-                            ConcurrencyStamp = "6537cd7f-efc8-4fb1-ab45-0160a281ebfa",
+                            ConcurrencyStamp = "b0ae4265895643878cdf010610719615",
                             IsActive = false,
-                            Name = "Manager"
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "6da17853bad14f88b29b246e8ad4a085",
-                            ConcurrencyStamp = "dfbb44ef-cdc0-4ac5-9400-9472d5df72f4",
+                            ConcurrencyStamp = "ae83cc896b484d9498cd3bf66ef2fcdc",
                             IsActive = false,
-                            Name = "User"
+                            Name = "User",
+                            NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "a5dddd3a3e6949289c766384a8df4db3",
-                            ConcurrencyStamp = "b4fa1bd8-ec23-4ab4-902a-d5b5d7cad22b",
+                            ConcurrencyStamp = "b2da4a92633d4bab94f615cf88be86d3",
                             IsActive = false,
-                            Name = "Admin"
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         });
                 });
 
@@ -254,94 +259,6 @@ namespace OnlineShop.Infrastructor.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("OnlineShop.Domain.Entities.Products.Category", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("ParentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("OnlineShop.Domain.Entities.Products.Product", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Inventory")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Picture")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("OnlineShop.Domain.Entities.Products.Product_Category", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CategoryId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Product_Categories");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("OnlineShop.Domain.Entities.Identity.ApplicationUser", null)
@@ -399,34 +316,6 @@ namespace OnlineShop.Infrastructor.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("OnlineShop.Domain.Entities.Products.Category", b =>
-                {
-                    b.HasOne("OnlineShop.Domain.Entities.Products.Category", "SubCategory")
-                        .WithMany("Categories")
-                        .HasForeignKey("ParentId");
-
-                    b.Navigation("SubCategory");
-                });
-
-            modelBuilder.Entity("OnlineShop.Domain.Entities.Products.Product_Category", b =>
-                {
-                    b.HasOne("OnlineShop.Domain.Entities.Products.Category", "Category")
-                        .WithMany("product_Categories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OnlineShop.Domain.Entities.Products.Product", "Product")
-                        .WithMany("product_Categories")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("OnlineShop.Domain.Entities.Identity.ApplicationRole", b =>
                 {
                     b.Navigation("RoleClaims");
@@ -437,18 +326,6 @@ namespace OnlineShop.Infrastructor.Migrations
             modelBuilder.Entity("OnlineShop.Domain.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("OnlineShop.Domain.Entities.Products.Category", b =>
-                {
-                    b.Navigation("Categories");
-
-                    b.Navigation("product_Categories");
-                });
-
-            modelBuilder.Entity("OnlineShop.Domain.Entities.Products.Product", b =>
-                {
-                    b.Navigation("product_Categories");
                 });
 #pragma warning restore 612, 618
         }

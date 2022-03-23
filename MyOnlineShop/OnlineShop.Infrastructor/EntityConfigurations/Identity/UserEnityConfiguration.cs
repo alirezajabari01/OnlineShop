@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Domain.EntityConfigurations.Identity
+namespace OnlineShop.Infrastructor.EntityConfigurations.Identity
 {
     public class UserEnityConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
@@ -32,6 +32,8 @@ namespace OnlineShop.Domain.EntityConfigurations.Identity
 
             builder.HasIndex(w => w.PhoneNumber).IsUnique();
             builder.HasIndex(w => w.UserName).IsUnique();
+
+            builder.Property(w => w.PasswordHash).IsRequired();
         }
     }
 }

@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Core.DTO;
 using OnlineShop.Core.DTO.UsersDTO;
+using OnlineShop.Core.Security;
 using OnlineShop.Domain.Entities.Identity;
+using OnlineShop.Infrastructor.DTO.RolesDTO;
 using OnlineShop.Infrastructor.Repositories.Base;
 using OnlineShop.IOC.IServices;
 using System;
@@ -42,6 +44,28 @@ namespace OnlineShop.IOC.Services
                 }
             }
             return outPut;
+        }
+
+        public async Task<string> CheckPhoneNmberAsync(string phoneNumber)
+        {
+            string result = "";
+            var user = await _userManager.Users.FirstOrDefaultAsync(s => s.PhoneNumber == phoneNumber);
+            if (user != null)
+            {
+                result = "تلفن همراه در سامانه ثبت شده است";
+            }
+            return result;
+        }
+
+        public async Task<string> CheckUserNameAsync(string userName)
+        {
+            string result = "نام کاربری یافت نشد";
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user != null)
+            {
+                result = "";
+            }
+            return result;
         }
 
         public async Task<string> CreateUserAsync(UserDTO userDTO)
@@ -123,15 +147,56 @@ namespace OnlineShop.IOC.Services
             return result;
         }
 
+        public async Task<string> LoginAsync(LoginDTO loginDTO)
+        {
+            string token = "کاربر یافت نشد";
+
+            string hashedPassword = HashGenerator.Salterhash(loginDTO.PasswordHash);
+
+            var user = await _userManager.Users
+                .Include(s=>s.UserRoles).ThenInclude(s=>s.Role).ThenInclude(s=>s.RoleClaims)
+                .FirstOrDefaultAsync
+                (u => u.UserName == loginDTO.UserName && u.PasswordHash == hashedPassword);
+
+            if (user != null)
+            {
+
+                token = hashedPassword == user.PasswordHash ? TokenGenerator.GenerateToken(user) : "";
+            }
+
+            return token;
+        }
+
+        public async Task<string> RegisterAsync(RegisterDTO registerDTO)
+        {
+            
+            string outPut = "انجام نشد";
+            registerDTO.PasswordHash = HashGenerator.Salterhash(registerDTO.PasswordHash);
+
+            var dtoMapped = mapper.Map<ApplicationUser>(registerDTO);
+
+            var registerResult = await _userManager.CreateAsync(dtoMapped);
+            if (registerResult.Succeeded)
+            {
+                var addToRoleResult = await _userManager.AddToRoleAsync(dtoMapped, AuthorizationRole.UserRole);
+                if (addToRoleResult.Succeeded)
+                {   
+                    outPut = TokenGenerator.GenerateToken
+                        (await _userManager.FindByNameAsync(registerDTO.UserName));
+                }
+            }
+            return outPut;
+        }
+
         public async Task<bool> RemoveRoleFromUserAsync(string id)
         {
             bool outPut = false;
 
             var findUserByIdResult = await _userManager.FindByIdAsync(id);
-            if(findUserByIdResult != null)
+            if (findUserByIdResult != null)
             {
                 var userRoles = await _userManager.GetRolesAsync(findUserByIdResult);
-                if(userRoles.Count > 0)
+                if (userRoles.Count > 0)
                 {
                     foreach (var roleName in userRoles)
                     {

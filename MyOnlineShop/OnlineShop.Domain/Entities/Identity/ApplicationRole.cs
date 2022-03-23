@@ -15,5 +15,6 @@ namespace OnlineShop.Domain.Entities.Identity
         }
         public bool IsActive { get; set; }
         public ICollection<ApplicationUserRole> UserRoles { get; set; }
+        public ICollection<ApplicationRoleClaim> RoleClaims { get; set; }
     }
 }

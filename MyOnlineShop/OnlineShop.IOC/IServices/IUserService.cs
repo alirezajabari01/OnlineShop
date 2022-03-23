@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OnlineShop.IOC.IServices
 {
-    public interface IUserService
+    public interface IUserService:IAccountsService
     {
         Task<List<ShowAllUsersDTO>> GetAllAsync();
         Task<bool> IsUserNameExistAsync(string username);

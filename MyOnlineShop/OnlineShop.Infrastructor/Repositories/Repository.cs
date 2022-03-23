@@ -17,24 +17,25 @@ namespace OnlineShop.Infrastructor.Repositories
             this.db = db;
         }
 
-        public T Create(T entity)
+        public async Task<int> CreateAsync(T entity)
         {
-            throw new NotImplementedException();
+            await db.Set<T>().AddAsync(entity);
+            return await db.SaveChangesAsync();
         }
 
         public IQueryable<T> GetAll()
         {
             return db.Set<T>();
         }
-
-        public T GetById(string id)
+        public Task<T> GetByIdAsync(object id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(db.Set<T>().Find(id));
         }
 
-        public int Update(T entity)
+        public Task<int> UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            db.Set<T>().Update(entity);
+            return db.SaveChangesAsync();
         }
     }
 }
