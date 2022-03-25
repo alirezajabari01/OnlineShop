@@ -11,6 +11,7 @@ namespace OnlineShop.Core.DTO.CategoriesDTO
         public string Id { get; set; }
         public string Name { get; set; }
         public string ParentId { get; set; }
-        public List<ShowCategiroesDTO> SubCategiries { get; set; }
+        public List<ShowCategiroesDTO> Categories { get; set; }
     }
+    
 }

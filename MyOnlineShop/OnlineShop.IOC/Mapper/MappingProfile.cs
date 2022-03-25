@@ -26,7 +26,7 @@ namespace OnlineShop.IOC.Mapper
             CreateMap<List<ApplicationRoleClaim>, List<RoleClaimDTO>>().ReverseMap();
 
             CreateMap<Category, CategoryDTO>().ReverseMap();
-            CreateMap<Category, List<ShowCategiroesDTO>>().ReverseMap();
+            CreateMap<Category,ShowCategiroesDTO>().ReverseMap();
         }
     }
 }

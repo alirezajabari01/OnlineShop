@@ -49,44 +49,30 @@ namespace OnlineShop.IOC.Services
 
         public async Task<List<ShowCategiroesDTO>> GetCategiriesAsync()
         {
-            var cat = await repository.GetAll()
+            var allCategories = await repository.GetAll()
                 .ToListAsync();
+
             var dtoList = new List<ShowCategiroesDTO>();
-            foreach (var category in cat)
+            foreach (var category in allCategories)
             {
-                if (category.Categories != null)
+                var dto = new ShowCategiroesDTO()
                 {
-                    var c = new ShowCategiroesDTO()
-                    {
-                        ParentId = category.ParentId,
-                        Id = category.Id,
-                        Name = category.Name,
-                        SubCategiries = category.Categories
-                        .Select(c => new ShowCategiroesDTO()
-                        {
-                            Id = c.Id,
-                            ParentId = c.ParentId,
-                            Name = c.Name,
-                        }).ToList()
-                    };
-                    while (c.SubCategiries.Any())
-                    {
-                        c.SubCategiries.Add(new ShowCategiroesDTO()
-                        {
-                            SubCategiries = c.SubCategiries,
-                            Id = c.Id,
-                            Name = c.Name,
-                            ParentId = c.ParentId,
-                        });
-                    }
-                    dtoList.Add(c);
+                    ParentId = category.ParentId,
+                    Id = category.Id,
+                    Name = category.Name,
+                };
+                dtoList.Add(dto);
+            }
+            foreach (var category in dtoList)
+            {
+                var children = dtoList.Where(w => w.ParentId == category.Id).ToList();
+                if (children.Any())
+                {
+                    category.Categories = children;
                 }
-            };
-            return dtoList;
-
+            }
+            return dtoList.Where(w=>w.ParentId == null).ToList();
         }
-
-
 
         public async Task<CategoryDTO> GetCategoryByIdAsync(string id)
         {
