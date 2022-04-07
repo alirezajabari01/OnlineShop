@@ -26,7 +26,9 @@ namespace OnlineShop.IOC.Services
 
         public async Task<int> CreateCategoryAsync(CategoryDTO categoryDTO)
         {
+            categoryDTO.Id = Guid.NewGuid().ToString();
             var mappedCategory = mapper.Map<Category>(categoryDTO);
+
             var createResult = await repository.CreateAsync(mappedCategory);
             return createResult;
         }
@@ -71,18 +73,34 @@ namespace OnlineShop.IOC.Services
                     category.Categories = children;
                 }
             }
-            return dtoList.Where(w=>w.ParentId == null).ToList();
+            return dtoList.Where(w => w.ParentId == null).ToList();
         }
 
-        public async Task<CategoryDTO> GetCategoryByIdAsync(string id)
+        public async Task<ShowCategiroesDTO> GetCategoryByIdAsync(string id)
         {
-            var category = await repository.GetByIdAsync(id);
-            return mapper.Map<CategoryDTO>(category);
+            var category = await repository.GetAll()
+                .Include(s => s.Categories)
+                .SingleOrDefaultAsync(s => s.Id == id);
+            return mapper.Map<ShowCategiroesDTO>(category);
         }
 
-        public Task<int> UpdateCategoryAsync(CategoryDTO categoryDTO)
+        public async Task<string> UpdateCategoryAsync(UpdateCategoryDTO categoryDTO)
         {
-            throw new NotImplementedException();
+            string outPut = "انجام نشد";
+            var category = await repository.GetByIdAsync(categoryDTO.Id);
+            if (category != null)
+            {
+                category.Name = categoryDTO.Name;
+                category.ParentId = categoryDTO.ParentId;
+                category.IsActive = categoryDTO.IsActive;
+
+                var updateResult = await repository.UpdateAsync(category);
+                if (updateResult == 1)
+                {
+                    outPut = "انجام شد";
+                }
+            }
+            return outPut;
         }
     }
 }

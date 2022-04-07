@@ -18,35 +18,32 @@ namespace OnlineShop.Core.Security
 
             if (user != null)
             {
-                if (user.IsActive == true)
+                var claims = new List<Claim>();
+
+                claims.Add(new Claim("UserId", user.Id));
+                foreach (var role in user.UserRoles)
                 {
-                    var claims = new List<Claim>();
-
-                    claims.Add(new Claim("UserId", user.Id));
-                    foreach (var role in user.UserRoles)
+                    claims.Add(new Claim("role", role.Role.Name));
+                    foreach (var roleClaim in role.Role.RoleClaims)
                     {
-                        claims.Add(new Claim("role", role.Role.Name));
-                        foreach (var roleClaim in role.Role.RoleClaims)
-                        {
-                            claims.Add(new Claim("roleClaim", roleClaim.ClaimValue));
-                        }
+                        claims.Add(new Claim("roleClaim", roleClaim.ClaimValue));
                     }
-
-                    var tokenDescriptor = new SecurityTokenDescriptor()
-                    {
-                        Subject = new ClaimsIdentity(claims),
-                        Issuer = user.UserName,
-                        Expires = DateTime.UtcNow.AddHours(9),
-                        Audience = user.UserName,
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey
-                    (Encoding.ASCII.GetBytes("in shabi@ke migan shab nist age shabe^mesle dishab nist")
-                    ), SecurityAlgorithms.HmacSha256Signature)
-                    };
-
-                    JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                    token = tokenHandler.WriteToken(securityToken);
                 }
+
+                var tokenDescriptor = new SecurityTokenDescriptor()
+                {
+                    Subject = new ClaimsIdentity(claims),
+                    Issuer = user.UserName,
+                    Expires = DateTime.UtcNow.AddHours(9),
+                    Audience = user.UserName,
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey
+                (Encoding.ASCII.GetBytes("in shabi@ke migan shab nist age shabe^mesle dishab nist")
+                ), SecurityAlgorithms.HmacSha256Signature)
+                };
+
+                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                token = tokenHandler.WriteToken(securityToken);
             }
 
             return token;

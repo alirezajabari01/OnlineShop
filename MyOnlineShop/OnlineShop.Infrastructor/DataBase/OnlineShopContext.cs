@@ -10,6 +10,8 @@ using OnlineShop.Domain.Entities.Identity;
 using OnlineShop.Infrastructor.EntityConfigurations.Identity;
 using OnlineShop.Domain.Entities.Products;
 using OnlineShop.Infrastructor.EntityConfigurations.Products;
+using OnlineShop.Infrastructor.EntityConfigurations.UserFeedBacks;
+using OnlineShop.Domain.Entities.UserFeedBacks;
 
 namespace OnlineShop.Infrastructor.DataBase
 {
@@ -24,6 +26,9 @@ namespace OnlineShop.Infrastructor.DataBase
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories  { get; set; }
         public DbSet<Product_Category> Product_Categories  { get; set; }
+        public DbSet<Comment> Comments  { get; set; }
+        public DbSet<ProductVote> ProductVotes { get; set; }
+        public DbSet<ProductRate> ProductRates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -36,6 +41,9 @@ namespace OnlineShop.Infrastructor.DataBase
             builder.ApplyConfiguration(new CategoryEntityConfiguration());
             builder.ApplyConfiguration(new ProductEntityConfiguration());
             builder.ApplyConfiguration(new ProductCategoryEntityConfiguration());
+            builder.ApplyConfiguration(new CommentsEtityConfiguration());
+            builder.ApplyConfiguration(new ProductVoteEntityConfiguration());
+            builder.ApplyConfiguration(new ProductRateEntityConfiguration());
         }
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.OpenApi.Models;
 using OnlineShop.Domain.Entities.Identity;
 using OnlineShop.Infrastructor.DataBase;
 using System;
-using OnlineShop.ExtentionMethods;
+using OnlineShop.ConfigurationServices;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

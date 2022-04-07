@@ -117,21 +117,21 @@ namespace OnlineShop.Infrastructor.Migrations
                         new
                         {
                             Id = "e7200f30632b4742ad2a0ed4902049f9",
-                            ConcurrencyStamp = "6537cd7f-efc8-4fb1-ab45-0160a281ebfa",
+                            ConcurrencyStamp = "d4a16a6b-5fea-4010-99f8-44beb30fecf0",
                             IsActive = false,
                             Name = "Manager"
                         },
                         new
                         {
                             Id = "6da17853bad14f88b29b246e8ad4a085",
-                            ConcurrencyStamp = "dfbb44ef-cdc0-4ac5-9400-9472d5df72f4",
+                            ConcurrencyStamp = "273321f6-de3c-47df-b2ac-d7b619590ce4",
                             IsActive = false,
                             Name = "User"
                         },
                         new
                         {
                             Id = "a5dddd3a3e6949289c766384a8df4db3",
-                            ConcurrencyStamp = "b4fa1bd8-ec23-4ab4-902a-d5b5d7cad22b",
+                            ConcurrencyStamp = "10a86238-59e2-4a3b-a6e9-46bc842662ad",
                             IsActive = false,
                             Name = "Admin"
                         });
@@ -159,6 +159,57 @@ namespace OnlineShop.Infrastructor.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RoleClaims");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authorizationdecision",
+                            ClaimValue = "User",
+                            RoleId = "6da17853bad14f88b29b246e8ad4a085"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authorizationdecision",
+                            ClaimValue = "Admin.RoleClaims",
+                            RoleId = "a5dddd3a3e6949289c766384a8df4db3"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authorizationdecision",
+                            ClaimValue = "Admin.Roles",
+                            RoleId = "a5dddd3a3e6949289c766384a8df4db3"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authorizationdecision",
+                            ClaimValue = "Admin.Comments",
+                            RoleId = "a5dddd3a3e6949289c766384a8df4db3"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authorizationdecision",
+                            ClaimValue = "Admin.Products",
+                            RoleId = "a5dddd3a3e6949289c766384a8df4db3"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authorizationdecision",
+                            ClaimValue = "Admin.Users",
+                            RoleId = "a5dddd3a3e6949289c766384a8df4db3"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authorizationdecision",
+                            ClaimValue = "Admin.Category",
+                            RoleId = "a5dddd3a3e6949289c766384a8df4db3"
+                        });
                 });
 
             modelBuilder.Entity("OnlineShop.Domain.Entities.Identity.ApplicationUser", b =>
@@ -288,6 +339,11 @@ namespace OnlineShop.Infrastructor.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Inventory")
                         .HasColumnType("int");
 
@@ -308,6 +364,16 @@ namespace OnlineShop.Infrastructor.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("ShortLink")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
 
@@ -340,6 +406,106 @@ namespace OnlineShop.Infrastructor.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Product_Categories");
+                });
+
+            modelBuilder.Entity("OnlineShop.Domain.Entities.UserFeedBacks.Comment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ParentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("OnlineShop.Domain.Entities.UserFeedBacks.ProductRate", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Rate")
+                        .HasMaxLength(1)
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProductRates");
+                });
+
+            modelBuilder.Entity("OnlineShop.Domain.Entities.UserFeedBacks.ProductVote", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Vote")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProductVotes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -427,6 +593,67 @@ namespace OnlineShop.Infrastructor.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("OnlineShop.Domain.Entities.UserFeedBacks.Comment", b =>
+                {
+                    b.HasOne("OnlineShop.Domain.Entities.UserFeedBacks.Comment", "Reply")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("OnlineShop.Domain.Entities.Products.Product", "Product")
+                        .WithMany("Comments")
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("OnlineShop.Domain.Entities.Identity.ApplicationUser", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Reply");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OnlineShop.Domain.Entities.UserFeedBacks.ProductRate", b =>
+                {
+                    b.HasOne("OnlineShop.Domain.Entities.Products.Product", "Product")
+                        .WithMany("ProductRates")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineShop.Domain.Entities.Identity.ApplicationUser", "User")
+                        .WithMany("ProductRates")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OnlineShop.Domain.Entities.UserFeedBacks.ProductVote", b =>
+                {
+                    b.HasOne("OnlineShop.Domain.Entities.Products.Product", "Product")
+                        .WithMany("ProductVotes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineShop.Domain.Entities.Identity.ApplicationUser", "User")
+                        .WithMany("ProductVotes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("OnlineShop.Domain.Entities.Identity.ApplicationRole", b =>
                 {
                     b.Navigation("RoleClaims");
@@ -436,6 +663,12 @@ namespace OnlineShop.Infrastructor.Migrations
 
             modelBuilder.Entity("OnlineShop.Domain.Entities.Identity.ApplicationUser", b =>
                 {
+                    b.Navigation("Comments");
+
+                    b.Navigation("ProductRates");
+
+                    b.Navigation("ProductVotes");
+
                     b.Navigation("UserRoles");
                 });
 
@@ -448,7 +681,18 @@ namespace OnlineShop.Infrastructor.Migrations
 
             modelBuilder.Entity("OnlineShop.Domain.Entities.Products.Product", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("product_Categories");
+
+                    b.Navigation("ProductRates");
+
+                    b.Navigation("ProductVotes");
+                });
+
+            modelBuilder.Entity("OnlineShop.Domain.Entities.UserFeedBacks.Comment", b =>
+                {
+                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }

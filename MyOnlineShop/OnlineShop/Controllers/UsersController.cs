@@ -4,7 +4,6 @@ using OnlineShop.Core.DTO;
 using OnlineShop.Core.DTO.UsersDTO;
 using OnlineShop.Core.Security;
 using OnlineShop.Core.Security.Users;
-using OnlineShop.Infrastructor.DTO.RolesDTO;
 using OnlineShop.IOC.IServices;
 using System.Threading.Tasks;
 
@@ -38,17 +37,17 @@ namespace OnlineShop.Controllers
 
         [SecurityFilter("User.Create")]
         [HttpPost("CreateUser")]
-        public async Task<IActionResult> CreateUser(UserDTO userDTO)
+        public async Task<IActionResult> CreateUser([FromForm] UserDTO userDTO)
         {
             return Created("", await userService.CreateUserAsync(userDTO));
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateUserAsync(UserDTO userDTO)
+        public async Task<IActionResult> UpdateUserAsync([FromForm] UserDTO userDTO)
         {
             return Ok(await userService.UpdateUserAsync(userDTO));
         }
         [HttpPost("AddRoleToUser")]
-        public async Task<IActionResult> AddRoleToUser(AddRoleToUserDTO addRoleToUserDTO)
+        public async Task<IActionResult> AddRoleToUser([FromForm] AddRoleToUserDTO addRoleToUserDTO)
         {
 
             return Created("", await userService.AddRoleToUserAsync(addRoleToUserDTO));

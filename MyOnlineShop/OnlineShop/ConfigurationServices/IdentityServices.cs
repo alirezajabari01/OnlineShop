@@ -4,7 +4,7 @@ using OnlineShop.Domain.Entities.Identity;
 using OnlineShop.Infrastructor.DataBase;
 using System;
 
-namespace OnlineShop.ExtentionMethods
+namespace OnlineShop.ConfigurationServices
 {
     public static class IdentityServices
     {

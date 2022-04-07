@@ -19,6 +19,10 @@ namespace OnlineShop.Infrastructor.EntityConfigurations.Products
                 .WithOne(s=>s.Product)
                 .HasForeignKey(b=>b.ProductId);
 
+            builder.HasMany(s => s.Comments)
+                .WithOne(s => s.Product)
+                .HasForeignKey(s => s.ProductId);
+
             builder.Property(p=>p.Id).IsRequired();
 
             builder.Property(p=>p.Price).IsRequired();
@@ -32,6 +36,15 @@ namespace OnlineShop.Infrastructor.EntityConfigurations.Products
 
             builder.Property(p=>p.Name).HasMaxLength(255);
             builder.Property(p => p.Name).IsRequired();
+
+            builder.Property(f=>f.ShortDescription).IsRequired();
+            builder.Property(f=>f.ShortDescription).HasMaxLength(60);
+
+            builder.Property(h=>h.Description).IsRequired();
+            builder.Property(h=>h.Description).HasMaxLength(5000);
+
+            builder.Property(l=>l.ShortLink).IsRequired();
+            builder.Property(l=>l.ShortLink).HasMaxLength(15);
         }
     }
 }

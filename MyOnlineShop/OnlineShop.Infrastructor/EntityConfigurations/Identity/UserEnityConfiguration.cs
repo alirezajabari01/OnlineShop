@@ -34,6 +34,14 @@ namespace OnlineShop.Infrastructor.EntityConfigurations.Identity
             builder.HasIndex(w => w.UserName).IsUnique();
 
             builder.Property(w => w.PasswordHash).IsRequired();
+
+            builder.HasMany(s=>s.Comments)
+                .WithOne(e=>e.User)
+                .HasForeignKey(t=>t.UserId);
+
+            builder.HasMany(s => s.ProductVotes)
+                .WithOne(t => t.User)
+                .HasForeignKey(p => p.UserId);
         }
     }
 }

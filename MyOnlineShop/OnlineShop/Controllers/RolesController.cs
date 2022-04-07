@@ -32,12 +32,12 @@ namespace OnlineShop.Controllers
             return Ok(await roleService.DeActiveRole(id));
         }
         [HttpPost]
-        public async Task<IActionResult> CreateRoleAsync(RoleDTO roleDTO)
+        public async Task<IActionResult> CreateRoleAsync([FromForm] RoleDTO roleDTO)
         {
             return Ok(await roleService.CreateRole(roleDTO));
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateRoleAsync(RoleDTO roleDTO)
+        public async Task<IActionResult> UpdateRoleAsync([FromForm] RoleDTO roleDTO)
         {
             return Ok(await roleService.UpdateRole(roleDTO));
         }

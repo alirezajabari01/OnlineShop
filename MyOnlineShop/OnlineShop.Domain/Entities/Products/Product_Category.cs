@@ -9,11 +9,6 @@ namespace OnlineShop.Domain.Entities.Products
 {
     public class Product_Category:BaseEntity
     {
-        public Product_Category()
-        {
-            ProductId = Guid.NewGuid().ToString().Replace("-","");
-            CategoryId = Guid.NewGuid().ToString().Replace("-","");
-        }
         public string ProductId { get; set; }
         public string CategoryId { get; set; }
 

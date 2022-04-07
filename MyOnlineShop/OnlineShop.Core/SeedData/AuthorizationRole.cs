@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Infrastructor.DTO.RolesDTO
+namespace OnlineShop.Core.SeedData
 {
     public class AuthorizationRole
     {

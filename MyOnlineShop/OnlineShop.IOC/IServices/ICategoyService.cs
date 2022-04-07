@@ -11,9 +11,9 @@ namespace OnlineShop.IOC.IServices
     public interface ICategoyService
     {
         Task<List<ShowCategiroesDTO>> GetCategiriesAsync();
-        Task<CategoryDTO> GetCategoryByIdAsync(string id);
+        Task<ShowCategiroesDTO> GetCategoryByIdAsync(string id);
         Task<int> CreateCategoryAsync(CategoryDTO categoryDTO);
-        Task<int> UpdateCategoryAsync(CategoryDTO categoryDTO);
+        Task<string> UpdateCategoryAsync(UpdateCategoryDTO categoryDTO);
         Task<bool> DeActiveCategoryAsync(string id);
     }
 }

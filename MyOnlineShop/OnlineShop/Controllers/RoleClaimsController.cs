@@ -23,12 +23,12 @@ namespace OnlineShop.Controllers
             return Ok(await roleClaimService.GetAllRoleClaimsAsync(id));
         }
         [HttpPost]
-        public async Task<IActionResult> CreateRoleClaim(RoleClaimDTO dto)
+        public async Task<IActionResult> CreateRoleClaim([FromForm]RoleClaimDTO dto)
         {
             return Created("",await roleClaimService.CreateRoleClaimAsync(dto));
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateRoleClaim(UpdateRoleClaimDTO dto)
+        public async Task<IActionResult> UpdateRoleClaim([FromForm] UpdateRoleClaimDTO dto)
         {
             return Ok(await roleClaimService.UpdateRoleClaimAsync(dto));
         }

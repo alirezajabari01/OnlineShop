@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OnlineShop.Domain.Entities.Identity;
-using OnlineShop.Infrastructor.DTO.RolesDTO;
+using OnlineShop.Core.DTO.RolesDTO;
+using OnlineShop.Core.SeedData;
 
 namespace OnlineShop.Infrastructor.EntityConfigurations.Identity
 {

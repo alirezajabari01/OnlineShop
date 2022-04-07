@@ -9,7 +9,7 @@ using OnlineShop.IOC.IServices;
 using OnlineShop.IOC.Mapper;
 using OnlineShop.IOC.Services;
 
-namespace OnlineShop.ExtentionMethods
+namespace OnlineShop.ConfigurationServices
 {
     public static class ConfigureService
     {
@@ -25,7 +25,10 @@ namespace OnlineShop.ExtentionMethods
             services.AddScoped<IRoleClaimService, RoleClaimService>();
             services.AddScoped<IUserContext, UserContext>();
             services.AddScoped<ICategoyService, CategoyService>();
-
+            services.AddScoped<IProductsService,ProductService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IVoteService, VoteService>();
+            services.AddScoped<IRateService, RateService>();
         }
     }
 }

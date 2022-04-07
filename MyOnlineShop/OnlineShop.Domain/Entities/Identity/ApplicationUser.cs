@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using OnlineShop.Domain.Entities.UserFeedBacks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,8 @@ namespace OnlineShop.Domain.Entities.Identity
         }
         public bool IsActive { get; set; }
         public ICollection<ApplicationUserRole> UserRoles { get; set; }
+        public List<Comment> Comments { get; set; }
+        public List<ProductVote> ProductVotes { get; set; }
+        public List<ProductRate> ProductRates { get; set; }
     }
 }

@@ -18,25 +18,25 @@ namespace OnlineShop.Controllers
         }
 
         [HttpPost("CheckUserNameAsync")]
-        public async Task<IActionResult> CheckUserName(string userName)
+        public async Task<IActionResult> CheckUserName([FromForm] string userName)
         {
             return Ok(await _accountsService.CheckUserNameAsync(userName));
         }
 
         [HttpPost("CheckPhoneNumber")]
-        public async Task<IActionResult> CheckPhoneNumber(string phoneNumber)
+        public async Task<IActionResult> CheckPhoneNumber([FromForm] string phoneNumber)
         {
             return Ok(await _accountsService.CheckPhoneNmberAsync(phoneNumber));
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginDTO loginDTO)
+        public async Task<IActionResult> Login([FromForm] LoginDTO loginDTO)
         {
             return Ok(await _accountsService.LoginAsync(loginDTO));
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(RegisterDTO registerDTO)
+        public async Task<IActionResult> Register([FromForm] RegisterDTO registerDTO)
         {
             return Created("",await _accountsService.RegisterAsync(registerDTO));
         }
